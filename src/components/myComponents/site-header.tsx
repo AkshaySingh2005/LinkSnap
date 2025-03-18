@@ -1,17 +1,15 @@
 import { Button } from "@/components/ui/button";
-import  ModeToggle  from "./mode-toggle";
+import ModeToggle from "./mode-toggle";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAuth, useUser, SignOutButton } from "@clerk/clerk-react";
 
 const SiteHeader = () => {
   const location = useLocation();
   const pathname = location.pathname;
-  const user = null;
-
-  const signOut = () => {
-    console.log("Signing out...");
-  };
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -49,32 +47,39 @@ const SiteHeader = () => {
               Home
             </NavLink>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <NavLink
-              to="/dashboard"
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                pathname === "/dashboard"
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              }`}
+          {isSignedIn && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Dashboard
-            </NavLink>
-          </motion.div>
+              <NavLink
+                to="/dashboard"
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  pathname === "/dashboard"
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                }`}
+              >
+                Dashboard
+              </NavLink>
+            </motion.div>
+          )}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex items-center gap-4"
           >
-            {user ? (
-              <Button variant="ghost" onClick={signOut}>
-                Sign Out
-              </Button>
+            {isSignedIn ? (
+              <div className="flex items-center gap-4">
+                <SignOutButton>
+                  <Button variant="ghost">Logout</Button>
+                </SignOutButton>
+                <span className="text-sm text-muted-foreground">
+                  Hello, {user?.firstName || "User"}
+                </span>
+              </div>
             ) : (
               <>
                 <NavLink to="/login">

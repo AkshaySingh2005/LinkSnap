@@ -1,7 +1,7 @@
 import SiteFooter from "@/components/myComponents/site-footer";
 import SiteHeader from "@/components/myComponents/site-header";
 
-// Notes : implemet carousel for landing page see the bitly site later 
+// Notes : implemet carousel for landing page see the bitly site later
 
 const HomePage = () => {
   return (
