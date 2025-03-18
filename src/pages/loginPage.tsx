@@ -1,4 +1,5 @@
 import LoginForm from "@/components/myComponents/login-form";
+import SiteFooter from "@/components/myComponents/site-footer";
 import SiteHeader from "@/components/myComponents/site-header";
 
 const LoginPage = () => {
@@ -8,6 +9,7 @@ const LoginPage = () => {
       <main className="flex-1 flex items-center justify-center">
         <LoginForm />
       </main>
+      <SiteFooter />
     </div>
   );
 };

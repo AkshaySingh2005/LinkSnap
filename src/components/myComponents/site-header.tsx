@@ -32,7 +32,7 @@ const SiteHeader = () => {
             </span>
           </NavLink>
         </motion.div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ const SiteHeader = () => {
             {isSignedIn ? (
               <div className="flex items-center gap-4">
                 <SignOutButton>
-                  <Button variant="ghost">Logout</Button>
+                  <Button>Logout</Button>
                 </SignOutButton>
                 <span className="text-sm text-muted-foreground">
                   Hello, {user?.firstName || "User"}

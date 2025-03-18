@@ -1,4 +1,5 @@
 import RegisterForm from "@/components/myComponents/register-form";
+import SiteFooter from "@/components/myComponents/site-footer";
 import SiteHeader from "@/components/myComponents/site-header";
 
 const RegisterPage = () => {
@@ -8,6 +9,7 @@ const RegisterPage = () => {
       <main className="flex-1 flex items-center justify-center">
         <RegisterForm />
       </main>
+      <SiteFooter />
     </div>
   );
 };
