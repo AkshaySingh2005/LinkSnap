@@ -1,5 +1,6 @@
 import { Meteors } from "@/components/magicui/meteors";
 import { TypingAnimation } from "@/components/magicui/typing-animation";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
@@ -18,8 +19,10 @@ const LandingHero = () => {
                 transition={{ duration: 0.5 }}
                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
               > */}
-              <div className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"><TypingAnimation >Shorten, Share, Track !!!</TypingAnimation></div>
-                
+              <div className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                <TypingAnimation>Shorten, Share, Track !!!</TypingAnimation>
+              </div>
+
               {/* </motion.h1> */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -56,18 +59,16 @@ const LandingHero = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
+            className="w-full  flex justify-center object-contain"
           >
-            <div className="w-full  flex justify-center">
-              <div className="relative">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full w-64 h-64 md:w-80 md:h-80 absolute top-4 left-4 blur-3xl opacity-20 dark:opacity-30 animate-pulse"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                  alt="URL Shortener Dashboard"
-                  className="relative z-10 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 transform transition-transform hover:scale-105 duration-500"
-                />
-              </div>
-            </div>
+            {" "}
+            <BackgroundGradient animate={false}>
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                alt="URL Shortener Dashboard"
+                className="relative rounded-[22px] z-10  shadow-2xl border border-gray-200 dark:border-gray-700 "
+              />
+            </BackgroundGradient>
           </motion.div>
         </div>
       </div>
