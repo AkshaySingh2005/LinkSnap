@@ -4,6 +4,7 @@ import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/registerPage";
 import DashboardPage from "./pages/dashboardpage";
 import { useAuth } from "@clerk/clerk-react";
+import { Toaster } from "./components/ui/toaster";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isSignedIn, isLoaded } = useAuth();
@@ -24,19 +25,22 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />}></Route>
-      <Route path="/login" element={<LoginPage />}></Route>
-      <Route path="/register" element={<RegisterPage />}></Route>
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+    <>
+      <Toaster />
+      <Routes>
+        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="/register" element={<RegisterPage />}></Route>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </>
   );
 };
 
