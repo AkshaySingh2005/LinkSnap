@@ -1,22 +1,26 @@
+import { Meteors } from "@/components/magicui/meteors";
+import { TypingAnimation } from "@/components/magicui/typing-animation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 
 const LandingHero = () => {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-25 bg-gradient-to-b from-background to-muted">
+    <section className="relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border">
+      <Meteors number={35} />
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
-              <motion.h1
+              {/* <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
-              >
-                Shorten, Share, Track
-              </motion.h1>
+              > */}
+              <div className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"><TypingAnimation >Shorten, Share, Track !!!</TypingAnimation></div>
+                
+              {/* </motion.h1> */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -64,7 +68,6 @@ const LandingHero = () => {
                 />
               </div>
             </div>
-           
           </motion.div>
         </div>
       </div>
