@@ -13,31 +13,25 @@ const LandingHero = () => {
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
-              {/* <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
-              > */}
-              <div className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-                <TypingAnimation>Shorten, Share, Track !!!</TypingAnimation>
+            <div className="font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                <TypingAnimation duration={65} className="text-[4rem]">Shorten, Share, Track !!!</TypingAnimation>
               </div>
 
-              {/* </motion.h1> */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.5, delay: 1.5 }}
                 className="max-w-[600px] text-muted-foreground md:text-xl"
               >
                 Transform long, unwieldy links into short, memorable URLs. Track
                 clicks, analyze traffic, and optimize your online presence.
               </motion.p>
+
             </div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 1.5 }}
               className="flex flex-col gap-2 min-[400px]:flex-row"
             >
               <NavLink to="/login">
