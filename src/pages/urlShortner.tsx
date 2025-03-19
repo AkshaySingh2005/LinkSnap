@@ -17,6 +17,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { useToast } from "@/hooks/use-toast";
 import { NavLink } from "react-router-dom";
 import { MagicCard } from "@/components/magicui/magic-card";
+import { useTheme } from "@/context/theme-provider";
 
 export function UrlShortener() {
   const [url, setUrl] = useState("");
@@ -26,7 +27,7 @@ export function UrlShortener() {
   const [showQrCode, setShowQrCode] = useState(false);
 
   const { isSignedIn } = useAuth();
-
+  const { theme } = useTheme();
   const { toast } = useToast();
 
   const shortenUrl = async (e: React.FormEvent) => {
@@ -80,7 +81,7 @@ export function UrlShortener() {
   };
 
   return (
-    <section id="shorten" className="w-full py-14">
+    <section id="shorten" className="w-full py-14 border">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -107,7 +108,10 @@ export function UrlShortener() {
           className="mx-auto mt-8 max-w-xl"
         >
           <Card className="backdrop-blur-sm bg-background/80 border-primary/20">
-            <MagicCard gradientSize={250}>
+            <MagicCard
+              gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
+              gradientSize={250}
+            >
               <CardHeader>
                 <CardTitle>URL Shortener</CardTitle>
                 {/* <CardDescription>
