@@ -1,3 +1,4 @@
+import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { useMemo } from "react";
 
@@ -45,13 +46,28 @@ const ReviewPage = () => {
   );
 
   return (
-    <div>
-      <div className="text-center py-12  ">
-        <h2 className="text-4xl font-bold tracking-tight sm:text-4xl">
-          What our customers are saying ...
-        </h2>
+    <div className="relative min-h-[600px] w-full overflow-hidden">
+      {/* FlickeringGrid as background */}
+      <div className="absolute inset-0 z-0">
+        <FlickeringGrid 
+          className="size-full"
+          squareSize={4}
+          gridGap={6}
+          color="#6B7280"
+          maxOpacity={0.3}
+          flickerChance={0.1}
+        />
       </div>
-      <AnimatedTestimonials testimonials={testimonials} />
+      
+      {/* Content with relative z-index to appear above the background */}
+      <div className="relative z-10">
+        <div className="text-center py-12">
+          <h2 className="text-4xl font-bold tracking-tight sm:text-4xl">
+            What our customers are saying ...
+          </h2>
+        </div>
+        <AnimatedTestimonials testimonials={testimonials} />
+      </div>
     </div>
   );
 };
