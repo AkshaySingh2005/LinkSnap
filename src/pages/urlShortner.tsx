@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
-  //   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -18,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { NavLink } from "react-router-dom";
 import { MagicCard } from "@/components/magicui/magic-card";
 import { useTheme } from "@/context/theme-provider";
+import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 
 export function UrlShortener() {
   const [url, setUrl] = useState("");
@@ -81,8 +81,21 @@ export function UrlShortener() {
   };
 
   return (
-    <section id="shorten" className="w-full py-14 border">
-      <div className="container px-4 md:px-6">
+    <section id="shorten" className="relative w-full py-28 overflow-hidden">
+      {/* Flickering Grid Background */}
+      <div className="absolute inset-0 z-0">
+        <FlickeringGrid
+          className="size-full"
+          squareSize={4}
+          gridGap={6}
+          color={theme === "dark" ? "#6B7280" : "#E5E7EB"}
+          maxOpacity={theme === "dark" ? 0.3 : 0.5}
+          flickerChance={0.1}
+        />
+      </div>
+
+      {/* Content Layer */}
+      <div className="container px-4 md:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +120,7 @@ export function UrlShortener() {
           viewport={{ once: true }}
           className="mx-auto mt-8 max-w-xl"
         >
-          <Card className="backdrop-blur-sm bg-background/80 border-primary/20">
+          <Card className="backdrop-blur-md bg-background/70 border-primary/20 shadow-xl">
             <MagicCard
               gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
               gradientSize={250}

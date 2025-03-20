@@ -27,8 +27,8 @@ const SiteHeader = () => {
             >
               <Sparkles className="h-6 w-6 text-primary" />
             </motion.div>
-            <span className="font-bold text-xl flex items-center">
-              Link<span className="text-primary">Snap</span>
+            <span className="font-bold text-[26px] flex items-center">
+              Link<span className="text-[#4387f6]">Snap</span>
             </span>
           </NavLink>
         </motion.div>

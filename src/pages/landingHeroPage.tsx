@@ -7,14 +7,16 @@ import { NavLink } from "react-router-dom";
 
 const LandingHero = () => {
   return (
-    <section className="relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border">
+    <section className="relative flex h-[630px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border">
       <Meteors number={35} />
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
-            <div className="font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-                <TypingAnimation duration={65} className="text-[4rem]">Shorten, Share, Track !!!</TypingAnimation>
+              <div className="font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                <TypingAnimation duration={65} className="text-[4rem]">
+                  Shorten, Share, Track !!!
+                </TypingAnimation>
               </div>
 
               <motion.p
@@ -26,7 +28,6 @@ const LandingHero = () => {
                 Transform long, unwieldy links into short, memorable URLs. Track
                 clicks, analyze traffic, and optimize your online presence.
               </motion.p>
-
             </div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
