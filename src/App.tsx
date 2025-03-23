@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "./pages/homepage";
-import LoginPage from "./pages/loginPage";
-import RegisterPage from "./pages/registerPage";
-import DashboardPage from "./pages/dashboardpage";
+import HomePage from "./pages/main/homepage";
+import LoginPage from "./pages/main/loginPage";
+import RegisterPage from "./pages/main/registerPage";
+import DashboardPage from "./pages/dashboard/dashboardpage";
 import { useAuth } from "@clerk/clerk-react";
 import { Toaster } from "./components/ui/toaster";
 

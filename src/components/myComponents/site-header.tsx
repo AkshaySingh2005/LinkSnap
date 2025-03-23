@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import ModeToggle from "./mode-toggle";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Link } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth, useUser, SignOutButton } from "@clerk/clerk-react";
 
@@ -25,7 +25,7 @@ const SiteHeader = () => {
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
             >
-              <Sparkles className="h-6 w-6 text-primary" />
+              <Link className="h-6 w-6 text-[#4387f6]" />
             </motion.div>
             <span className="font-bold text-[26px] flex items-center">
               Link<span className="text-[#4387f6]">Snap</span>

@@ -2,19 +2,21 @@ import { Meteors } from "@/components/magicui/meteors";
 import { TypingAnimation } from "@/components/magicui/typing-animation";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@clerk/clerk-react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 
 const LandingHero = () => {
+  const { isSignedIn } = useAuth();
   return (
-    <section className="relative flex h-[630px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border">
+    <section className="relative flex h-[535px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border">
       <Meteors number={35} />
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
               <div className="font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-                <TypingAnimation duration={65} className="text-[4rem]">
+                <TypingAnimation duration={60} className="text-[3.7rem]">
                   Shorten, Share, Track !!!
                 </TypingAnimation>
               </div>
@@ -22,7 +24,7 @@ const LandingHero = () => {
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.5 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
                 className="max-w-[600px] text-muted-foreground md:text-xl"
               >
                 Transform long, unwieldy links into short, memorable URLs. Track
@@ -43,11 +45,13 @@ const LandingHero = () => {
                   Get Started
                 </Button>
               </NavLink>
-              <NavLink to="/register">
-                <Button size="lg" variant="outline">
-                  Create Account
-                </Button>
-              </NavLink>
+              {!isSignedIn && (
+                <NavLink to="/register">
+                  <Button size="lg" variant="outline">
+                    Create Account
+                  </Button>
+                </NavLink>
+              )}
             </motion.div>
           </div>
           <motion.div

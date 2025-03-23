@@ -127,11 +127,6 @@ export function UrlShortener() {
             >
               <CardHeader>
                 <CardTitle>URL Shortener</CardTitle>
-                {/* <CardDescription>
-                {user
-                  ? "Create and track your shortened URLs"
-                  : "Sign up to track and manage your links"}
-              </CardDescription> */}
               </CardHeader>
               <CardContent>
                 <form onSubmit={shortenUrl} className="space-y-4">
