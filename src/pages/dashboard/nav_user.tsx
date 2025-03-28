@@ -97,7 +97,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="text-red-500">
               <LogOut />
               <SignOutButton>
                 <SidebarMenuButton>Logout</SidebarMenuButton>

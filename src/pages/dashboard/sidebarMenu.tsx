@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav_user";
 
-// Menu items.
 const items = [
   {
     title: "Dashboard",
@@ -113,11 +112,6 @@ export function AppSidebar() {
                 avatar: "path/to/avatar.jpg",
               }}
             />
-
-            {/* <SidebarMenuButton onClick={handleSignOut}>
-              <LogOut className="text-[#7c3aed]" />
-              <span>Logout</span>
-            </SidebarMenuButton> */}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

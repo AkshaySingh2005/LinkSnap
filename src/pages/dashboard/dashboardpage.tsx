@@ -1,9 +1,14 @@
-import SidebarLayout from "./sidebar_layout";
+import SidebarLayout from "./sidebar_header_layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTheme } from "@/context/theme-provider";
 import { BarChart3, Link, Users } from "lucide-react";
 import { DateRangePicker } from "./dateRangePicker";
 import { useState } from "react";
+import TopClicks from "./analytics/top_clicks";
+import DevicePieChart from "./analytics/device_piechart";
+import ClicksLineChart from "./analytics/clicks_linechart";
+import ReferrerClicks from "./analytics/refer_clicks";
+import TopCountryClicks from "./analytics/top_countries_clicks";
 
 const DashboardPage = () => {
   const { theme } = useTheme();
@@ -37,7 +42,36 @@ const DashboardPage = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 md:gap-y-8  md:grid-flow-dense">
+            {/* First row bg-red-500 */}
+            <div className="rounded-lg shadow-2xl min-h-[150px] md:col-span-2">
+              <TopClicks />
+            </div>
+            {/* bg-yellow-500 */}
+            <div className=" rounded-lg shadow-2xl h-[120px] md:col-span-2 md:row-span-2">
+              <DevicePieChart />
+            </div>
+            {/* Second row */}
+            {/* bg-orange-500 */}
+            <div className="rounded-lg shadow-2xl min-h-[160px] md:col-span-2 md:row-span-2">
+              <ClicksLineChart />
+            </div>
+            {/* bg-teal-500 */}
+            <div className=" rounded-lg shadow-2xl min-h-[200px] md:col-span-2 md:row-span-2">
+              <ReferrerClicks />
+            </div>
+            {/* Third row */}
+            {/* bg-green-500  */}
+            <div className="rounded-lg shadow-xl h-[150px] md:col-span-2 ">
+              <TopCountryClicks />
+            </div>
+            
+            {/* Fourth row */}
+            <div className="bg-indigo-500 rounded-lg shadow-xl h-[250px] md:col-span-2" />
+            <div className="bg-blue-500 rounded-lg shadow-xl h-[600px] md:col-span-2 md:row-span-2" />
+          </div>
+
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xl font-medium">
@@ -82,9 +116,9 @@ const DashboardPage = () => {
                 </p>
               </CardContent>
             </Card>
-          </div>
+          </div> */}
 
-          <Card className="col-span-3">
+          {/* <Card className="col-span-3">
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
             </CardHeader>
@@ -93,7 +127,7 @@ const DashboardPage = () => {
                 Your recent link activity will appear here.
               </p>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </SidebarLayout>
     </div>
