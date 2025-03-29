@@ -14,16 +14,16 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card";
-  import { 
-    ArrowUpDown, 
-    ChevronDown, 
-    ChevronLeft, 
-    ChevronRight, 
-    ChevronsLeft, 
-    ChevronsRight, 
+  import {
+    ArrowUpDown,
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
     MapPin,
     Search,
-    X
+    X,
   } from "lucide-react";
   import { Button } from "@/components/ui/button";
   import {
@@ -42,13 +42,25 @@ import {
   import { Input } from "@/components/ui/input";
   import { useState, useEffect } from "react";
   
-  // Define the data structure for location clicks
-  type LocationData = {
+  // Define interfaces/types for better type safety
+  interface LocationData {
     id: string;
     country: string;
     clicks: number;
     percentage: number;
-  };
+  }
+  
+  interface TableState {
+    sorting: "asc" | "desc" | null;
+    searchQuery: string;
+    filteredData: LocationData[];
+    showSerialNumbers: boolean;
+    showCountry: boolean;
+    showClicks: boolean;
+    showPercentage: boolean;
+    currentPage: number;
+    pageSize: number;
+  }
   
   // Expanded sample data with more countries
   const sampleData: LocationData[] = [
@@ -84,40 +96,60 @@ import {
     { id: "at", country: "Austria", clicks: 1654, percentage: 0.8 },
   ];
   
+  // Constants
+  const ACCENT_COLOR = "#7c3aed";
+  const DEFAULT_PAGE_SIZE = 10;
+  
   const ClicksTableLocation = () => {
-    const [sorting, setSorting] = useState<"asc" | "desc" | null>("desc");
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filteredData, setFilteredData] = useState<LocationData[]>(sampleData);
-    const [showSerialNumbers, setShowSerialNumbers] = useState(true);
-    const [showCountry, setShowCountry] = useState(true);
-    const [showClicks, setShowClicks] = useState(true);
-    const [showPercentage, setShowPercentage] = useState(true);
-    
-    // Pagination state
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    // Use the interface for state
+    const [tableState, setTableState] = useState<TableState>({
+      sorting: "desc",
+      searchQuery: "",
+      filteredData: sampleData,
+      showSerialNumbers: true,
+      showCountry: true,
+      showClicks: true,
+      showPercentage: true,
+      currentPage: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+    });
+  
+    const {
+      sorting,
+      searchQuery,
+      filteredData,
+      showSerialNumbers,
+      showCountry,
+      showClicks,
+      showPercentage,
+      currentPage,
+      pageSize,
+    } = tableState;
   
     // Apply search filter and sorting
     useEffect(() => {
       let result = [...sampleData];
-      
+  
       // Apply search filter
       if (searchQuery) {
         const lowerQuery = searchQuery.toLowerCase();
-        result = result.filter(item => 
+        result = result.filter((item) =>
           item.country.toLowerCase().includes(lowerQuery)
         );
       }
-      
+  
       // Apply sorting
       if (sorting === "asc") {
         result.sort((a, b) => a.clicks - b.clicks);
       } else if (sorting === "desc") {
         result.sort((a, b) => b.clicks - a.clicks);
       }
-      
-      setFilteredData(result);
-      setCurrentPage(1); // Reset to first page whenever filter changes
+  
+      setTableState((prev) => ({
+        ...prev,
+        filteredData: result,
+        currentPage: 1, // Reset to first page whenever filter changes
+      }));
     }, [searchQuery, sorting]);
   
     const pageCount = Math.ceil(filteredData.length / pageSize);
@@ -131,12 +163,13 @@ import {
     const handleSort = () => {
       const newSorting =
         sorting === "desc" ? "asc" : sorting === "asc" ? null : "desc";
-      setSorting(newSorting);
+      setTableState((prev) => ({ ...prev, sorting: newSorting }));
     };
   
     // Pagination controls
     const goToPage = (page: number) => {
-      setCurrentPage(Math.max(1, Math.min(page, pageCount)));
+      const safePage = Math.max(1, Math.min(page, pageCount));
+      setTableState((prev) => ({ ...prev, currentPage: safePage }));
     };
   
     const goToFirstPage = () => goToPage(1);
@@ -147,13 +180,24 @@ import {
     // Handle page size change
     const handlePageSizeChange = (value: string) => {
       const newSize = parseInt(value);
-      setPageSize(newSize);
-      setCurrentPage(1); // Reset to first page when changing page size
+      setTableState((prev) => ({ 
+        ...prev, 
+        pageSize: newSize,
+        currentPage: 1 // Reset to first page when changing page size
+      }));
     };
   
     // Clear search
     const clearSearch = () => {
-      setSearchQuery("");
+      setTableState((prev) => ({ ...prev, searchQuery: "" }));
+    };
+  
+    // Column visibility handlers
+    const handleColumnVisibilityChange = (
+      column: keyof Pick<TableState, "showSerialNumbers" | "showCountry" | "showClicks" | "showPercentage">,
+      value: boolean
+    ) => {
+      setTableState((prev) => ({ ...prev, [column]: value }));
     };
   
     return (
@@ -161,7 +205,7 @@ import {
         <CardHeader className="px-5 py-4 flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-lg flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-[#7c3aed]" />
+              <MapPin className="h-5 w-5" style={{ color: ACCENT_COLOR }} />
               Clicks by Location
             </CardTitle>
             <CardDescription>
@@ -175,46 +219,55 @@ import {
                 Columns <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
+  
             <DropdownMenuContent align="end">
               <DropdownMenuCheckboxItem
                 checked={showSerialNumbers}
-                onCheckedChange={setShowSerialNumbers}
+                onCheckedChange={(checked) => 
+                  handleColumnVisibilityChange("showSerialNumbers", checked)
+                }
               >
                 No.
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={showCountry}
-                onCheckedChange={setShowCountry}
+                onCheckedChange={(checked) => 
+                  handleColumnVisibilityChange("showCountry", checked)
+                }
               >
                 Country
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={showClicks}
-                onCheckedChange={setShowClicks}
+                onCheckedChange={(checked) => 
+                  handleColumnVisibilityChange("showClicks", checked)
+                }
               >
                 Clicks
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={showPercentage}
-                onCheckedChange={setShowPercentage}
+                onCheckedChange={(checked) => 
+                  handleColumnVisibilityChange("showPercentage", checked)
+                }
               >
                 Percentage
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </CardHeader>
-        
+  
         <div className="px-5 pb-2">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search countries..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => setTableState(prev => ({ ...prev, searchQuery: e.target.value }))}
               className="pl-8 pr-10 h-9"
             />
             {searchQuery && (
-              <button 
+              <button
                 onClick={clearSearch}
                 className="absolute right-2 top-2.5 text-muted-foreground hover:text-foreground"
               >
@@ -223,29 +276,29 @@ import {
             )}
           </div>
         </div>
-        
+  
         <CardContent className="px-0 pt-0">
           <Table>
             <TableHeader>
               <TableRow>
                 {showSerialNumbers && (
-                  <TableHead className="w-[10%] pl-5">No.</TableHead>
+                  <TableHead className="w-[10%] pl-5 text-[#7c3aed]">No.</TableHead>
                 )}
                 {showCountry && (
                   <TableHead
-                    className={showSerialNumbers ? "w-[40%]" : "w-[50%] pl-5"}
+                    className={`${showSerialNumbers ? "w-[40%]" : "w-[50%] pl-5"} text-[#7c3aed]`}
                   >
                     Country
                   </TableHead>
                 )}
                 {showClicks && (
                   <TableHead
-                    className={showSerialNumbers ? "w-[25%]" : "w-[25%]"}
+                    className={`${showSerialNumbers ? "w-[25%]" : "w-[25%]"}`}
                   >
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="-ml-3 h-8 data-[state=open]:bg-accent"
+                      className="-ml-3 h-8 data-[state=open]:bg-accent text-[#7c3aed]"
                       onClick={handleSort}
                     >
                       Clicks
@@ -257,7 +310,7 @@ import {
                   <TableHead
                     className={`text-right ${
                       showSerialNumbers ? "w-[25%]" : "w-[25%]"
-                    } pr-5`}
+                    } pr-5 text-[#7c3aed]`}
                   >
                     %
                   </TableHead>
@@ -269,7 +322,9 @@ import {
                 currentData.map((row, index) => (
                   <TableRow key={row.id}>
                     {showSerialNumbers && (
-                      <TableCell className="pl-5">{startIndex + index + 1}</TableCell>
+                      <TableCell className="pl-5">
+                        {startIndex + index + 1}
+                      </TableCell>
                     )}
                     {showCountry && (
                       <TableCell
@@ -292,11 +347,11 @@ import {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell 
+                  <TableCell
                     colSpan={
-                      (showSerialNumbers ? 1 : 0) + 
-                      (showCountry ? 1 : 0) + 
-                      (showClicks ? 1 : 0) + 
+                      (showSerialNumbers ? 1 : 0) +
+                      (showCountry ? 1 : 0) +
+                      (showClicks ? 1 : 0) +
                       (showPercentage ? 1 : 0)
                     }
                     className="h-24 text-center"
@@ -307,23 +362,21 @@ import {
               )}
             </TableBody>
             <TableCaption className="px-5 pb-3 pt-2 text-left">
-              {filteredData.length > 0 ? (
-                `Showing ${startIndex + 1}-${endIndex} of ${filteredData.length} countries`
-              ) : (
-                "No matching countries found"
-              )}
+              {filteredData.length > 0
+                ? `Showing ${startIndex + 1}-${endIndex} of ${
+                    filteredData.length
+                  } countries`
+                : "No matching countries found"}
             </TableCaption>
           </Table>
-          
+  
           {/* Pagination Controls */}
           <div className="flex items-center justify-between px-5 py-2">
             <div className="flex items-center space-x-2">
               <p className="text-sm text-muted-foreground">
-                {filteredData.length > 0 ? (
-                  `Page ${currentPage} of ${pageCount}`
-                ) : (
-                  "0 results"
-                )}
+                {filteredData.length > 0
+                  ? `Page ${currentPage} of ${pageCount}`
+                  : "0 results"}
               </p>
               {filteredData.length > 0 && (
                 <Select
@@ -343,7 +396,7 @@ import {
                 </Select>
               )}
             </div>
-            
+  
             {filteredData.length > 0 && (
               <div className="flex items-center space-x-2">
                 <Button
