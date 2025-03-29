@@ -12,6 +12,8 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MapClicks from "./analytics/map_clciks";
+import ClicksTableLocation from "./analytics/clicks_tables";
 
 // Create a responsive grid layout with width provider
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -40,8 +42,8 @@ const DashboardPage = () => {
       { i: "lineChart", x: 0, y: 2, w: 2, h: 6.2, static: false },
       { i: "referrerClicks", x: 2, y: 4, w: 2, h: 6, static: false },
       { i: "countryClicks", x: 0, y: 6, w: 2, h: 2.5, static: false },
-      { i: "indigo", x: 0, y: 8, w: 2, h: 3, static: false },
-      { i: "blue", x: 2, y: 8, w: 2, h: 6, static: false },
+      { i: "map", x: 0, y: 8, w: 2, h: 6, static: false },
+      { i: "table", x: 2, y: 8, w: 2, h: 9.5 , static: false },
     ],
     md: [
       { i: "topClicks", x: 0, y: 0, w: 2, h: 2.4, static: false },
@@ -49,8 +51,8 @@ const DashboardPage = () => {
       { i: "lineChart", x: 0, y: 2, w: 2, h: 5.4, static: false },
       { i: "referrerClicks", x: 2, y: 4, w: 2, h: 5.2, static: false },
       { i: "countryClicks", x: 0, y: 6, w: 2, h: 2.4, static: false },
-      { i: "indigo", x: 0, y: 8, w: 2, h: 3, static: false },
-      { i: "blue", x: 2, y: 8, w: 2, h: 6, static: false },
+      { i: "map", x: 0, y: 8, w: 2, h: 5, static: false },
+      { i: "table", x: 2, y: 8, w: 2, h: 9.4, static: false },
     ],
     sm: [
       { i: "topClicks", x: 0, y: 0, w: 1, h: 2, static: false },
@@ -58,8 +60,8 @@ const DashboardPage = () => {
       { i: "lineChart", x: 0, y: 2, w: 1, h: 4, static: false },
       { i: "referrerClicks", x: 1, y: 4, w: 1, h: 4, static: false },
       { i: "countryClicks", x: 0, y: 6, w: 1, h: 2, static: false },
-      { i: "indigo", x: 1, y: 8, w: 1, h: 3, static: false },
-      { i: "blue", x: 0, y: 8, w: 1, h: 6, static: false },
+      { i: "map", x: 1, y: 8, w: 1, h: 3, static: false },
+      { i: "table", x: 0, y: 8, w: 1, h: 6, static: false },
     ],
   };
 
@@ -169,19 +171,15 @@ const DashboardPage = () => {
                 </DraggableCard>
               </div>
 
-              <div key="indigo">
+              <div key="map">
                 <DraggableCard>
-                  <div className="w-full h-full flex items-center justify-center">
-                    <h2 className="text-lg">User Demographics</h2>
-                  </div>
+                  <MapClicks />
                 </DraggableCard>
               </div>
 
-              <div key="blue">
+              <div key="table">
                 <DraggableCard>
-                  <div className="w-full h-full flex items-center justify-center">
-                    <h2 className="text-lg">Conversion Metrics</h2>
-                  </div>
+                  <ClicksTableLocation />
                 </DraggableCard>
               </div>
             </ResponsiveGridLayout>
