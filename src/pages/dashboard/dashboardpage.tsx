@@ -1,24 +1,88 @@
 import SidebarLayout from "./sidebar_header_layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTheme } from "@/context/theme-provider";
-import { BarChart3, Link, Users } from "lucide-react";
 import { DateRangePicker } from "./dateRangePicker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TopClicks from "./analytics/top_clicks";
 import DevicePieChart from "./analytics/device_piechart";
 import ClicksLineChart from "./analytics/clicks_linechart";
 import ReferrerClicks from "./analytics/refer_clicks";
 import TopCountryClicks from "./analytics/top_countries_clicks";
+import { ChartNoAxesCombined, GripHorizontal } from "lucide-react";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+// Create a responsive grid layout with width provider
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const DashboardPage = () => {
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [dateRange, setDateRange] = useState<{
     from: Date;
     to: Date;
   }>({
-    from: new Date(2025, 1, 15), // Feb 15, 2025
-    to: new Date(2025, 2, 12), // Mar 12, 2025
+    from: new Date(2025, 1, 15),
+    to: new Date(2025, 2, 12),
   });
+
+  // This effect ensures the grid renders properly after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Define layouts for different breakpoints
+  const layouts = {
+    lg: [
+      { i: "topClicks", x: 0, y: 0, w: 2, h: 2.5, static: false },
+      { i: "deviceChart", x: 2, y: 0, w: 2, h: 4.9, static: false },
+      { i: "lineChart", x: 0, y: 2, w: 2, h: 6.2, static: false },
+      { i: "referrerClicks", x: 2, y: 4, w: 2, h: 6, static: false },
+      { i: "countryClicks", x: 0, y: 6, w: 2, h: 2.5, static: false },
+      { i: "indigo", x: 0, y: 8, w: 2, h: 3, static: false },
+      { i: "blue", x: 2, y: 8, w: 2, h: 6, static: false },
+    ],
+    md: [
+      { i: "topClicks", x: 0, y: 0, w: 2, h: 2.4, static: false },
+      { i: "deviceChart", x: 2, y: 0, w: 2, h: 4.8, static: false },
+      { i: "lineChart", x: 0, y: 2, w: 2, h: 5.4, static: false },
+      { i: "referrerClicks", x: 2, y: 4, w: 2, h: 5.2, static: false },
+      { i: "countryClicks", x: 0, y: 6, w: 2, h: 2.4, static: false },
+      { i: "indigo", x: 0, y: 8, w: 2, h: 3, static: false },
+      { i: "blue", x: 2, y: 8, w: 2, h: 6, static: false },
+    ],
+    sm: [
+      { i: "topClicks", x: 0, y: 0, w: 1, h: 2, static: false },
+      { i: "deviceChart", x: 1, y: 0, w: 1, h: 4, static: false },
+      { i: "lineChart", x: 0, y: 2, w: 1, h: 4, static: false },
+      { i: "referrerClicks", x: 1, y: 4, w: 1, h: 4, static: false },
+      { i: "countryClicks", x: 0, y: 6, w: 1, h: 2, static: false },
+      { i: "indigo", x: 1, y: 8, w: 1, h: 3, static: false },
+      { i: "blue", x: 0, y: 8, w: 1, h: 6, static: false },
+    ],
+  };
+
+  // Function to save layout changes
+  // const handleLayoutChange = (layout, layouts) => {
+  //   // Optional: Save layouts to localStorage
+  //   localStorage.setItem("dashboard-layouts", JSON.stringify(layouts));
+  // };
+
+  // Custom card component with drag handle
+  const DraggableCard = ({ children }) => {
+    return (
+      <Card className="w-full h-full overflow-hidden">
+        <CardHeader className="pl-3 pb-1 pt-3 flex flex-row items-center space-y-0 gap-2">
+          {/* Drag handle with grip icon */}
+          <div className="drag-handle flex items-center cursor-grab active:cursor-grabbing">
+            <GripHorizontal className="h-5 w-5 text-[#7c3aed]" />
+          </div>
+        </CardHeader>
+        <CardContent className="p-3 pt-0 overflow-auto">{children}</CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div>
@@ -32,7 +96,11 @@ const DashboardPage = () => {
         >
           {/* Header row with Analytics title and DateRangePicker */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <h1 className="text-2xl font-bold">Analytics</h1>
+            <div className="flex flex-row gap-2 items-center ml-4">
+              <h1 className="text-2xl font-bold">Analytics</h1>
+              <ChartNoAxesCombined className="text-[#7c3aed]" />
+            </div>
+
             <DateRangePicker
               dateRange={dateRange}
               onDateRangeChange={(range) =>
@@ -42,92 +110,82 @@ const DashboardPage = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 md:gap-y-8  md:grid-flow-dense">
-            {/* First row bg-red-500 */}
-            <div className="rounded-lg shadow-2xl min-h-[150px] md:col-span-2">
-              <TopClicks />
-            </div>
-            {/* bg-yellow-500 */}
-            <div className=" rounded-lg shadow-2xl h-[120px] md:col-span-2 md:row-span-2">
-              <DevicePieChart />
-            </div>
-            {/* Second row */}
-            {/* bg-orange-500 */}
-            <div className="rounded-lg shadow-2xl min-h-[160px] md:col-span-2 md:row-span-2">
-              <ClicksLineChart />
-            </div>
-            {/* bg-teal-500 */}
-            <div className=" rounded-lg shadow-2xl min-h-[200px] md:col-span-2 md:row-span-2">
-              <ReferrerClicks />
-            </div>
-            {/* Third row */}
-            {/* bg-green-500  */}
-            <div className="rounded-lg shadow-xl h-[150px] md:col-span-2 ">
-              <TopCountryClicks />
-            </div>
-            
-            {/* Fourth row */}
-            <div className="bg-indigo-500 rounded-lg shadow-xl h-[250px] md:col-span-2" />
-            <div className="bg-blue-500 rounded-lg shadow-xl h-[600px] md:col-span-2 md:row-span-2" />
-          </div>
+          {/* CSS to style drag handles - Note the important .react-grid-item selector */}
+          <style jsx global>{`
+            .react-grid-item.react-grid-placeholder {
+              background: #7c3aed40 !important;
+              border-radius: 0.5rem;
+            }
 
-          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xl font-medium">
-                  Total Links
-                </CardTitle>
-                <Link className="h-4 w-4 text-[#7c3aed]" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-xl font-bold pb-2">258</div>
-                <p className="text-[1rem] text-muted-foreground">
-                  +20% from last month
-                </p>
-              </CardContent>
-            </Card>
+            /* Override default drag handle */
+            .react-draggable-dragging {
+              z-index: 100;
+              box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+                0 8px 10px -6px rgb(0 0 0 / 0.1);
+            }
+          `}</style>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xl font-medium">
-                  Total Clicks
-                </CardTitle>
-                <BarChart3 className="h-4 w-4 text-[#7c3aed]" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-xl font-bold pb-2">12,546</div>
-                <p className="text-[1rem] text-muted-foreground">
-                  +12% from last month
-                </p>
-              </CardContent>
-            </Card>
+          {/* React Grid Layout - only render once mounted for proper sizing */}
+          {mounted && (
+            <ResponsiveGridLayout
+              className="layout"
+              layouts={layouts}
+              breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+              cols={{ lg: 4, md: 4, sm: 2, xs: 1, xxs: 1 }}
+              rowHeight={80}
+              margin={[16, 16]}
+              isDraggable={true}
+              isResizable={false} // Disable resizing
+              // onLayoutChange={handleLayoutChange}
+              draggableHandle=".drag-handle" // Use our custom drag handle
+            >
+              <div key="topClicks" className="transition-shadow">
+                <DraggableCard>
+                  <TopClicks />
+                </DraggableCard>
+              </div>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xl font-medium">
-                  Active Users
-                </CardTitle>
-                <Users className="h-4 w-4 text-[#7c3aed]" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-xl font-bold pb-2">4,238</div>
-                <p className="text-[1rem] text-muted-foreground">
-                  +18% from last month
-                </p>
-              </CardContent>
-            </Card>
-          </div> */}
+              <div key="deviceChart">
+                <DraggableCard>
+                  <DevicePieChart />
+                </DraggableCard>
+              </div>
 
-          {/* <Card className="col-span-3">
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Your recent link activity will appear here.
-              </p>
-            </CardContent>
-          </Card> */}
+              <div key="lineChart">
+                <DraggableCard>
+                  <ClicksLineChart />
+                </DraggableCard>
+              </div>
+
+              <div key="referrerClicks">
+                <DraggableCard>
+                  <ReferrerClicks />
+                </DraggableCard>
+              </div>
+
+              <div key="countryClicks">
+                <DraggableCard>
+                  <TopCountryClicks />
+                </DraggableCard>
+              </div>
+
+              <div key="indigo">
+                <DraggableCard>
+                  <div className="w-full h-full flex items-center justify-center">
+                    <h2 className="text-lg">User Demographics</h2>
+                  </div>
+                </DraggableCard>
+              </div>
+
+              <div key="blue">
+                <DraggableCard>
+                  <div className="w-full h-full flex items-center justify-center">
+                    <h2 className="text-lg">Conversion Metrics</h2>
+                  </div>
+                </DraggableCard>
+              </div>
+            </ResponsiveGridLayout>
+          )}
         </div>
       </SidebarLayout>
     </div>
