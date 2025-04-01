@@ -11,7 +11,7 @@ import { ChartNoAxesCombined, GripHorizontal } from "lucide-react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import MapClicks from "./analytics/map_clciks";
 import ClicksTableLocation from "./analytics/clicks_tables";
 
@@ -43,7 +43,7 @@ const DashboardPage = () => {
       { i: "referrerClicks", x: 2, y: 4, w: 2, h: 6, static: false },
       { i: "countryClicks", x: 0, y: 6, w: 2, h: 2.5, static: false },
       { i: "map", x: 0, y: 8, w: 2, h: 6, static: false },
-      { i: "table", x: 2, y: 8, w: 2, h: 9.5 , static: false },
+      { i: "table", x: 2, y: 8, w: 2, h: 9.5, static: false },
     ],
     md: [
       { i: "topClicks", x: 0, y: 0, w: 2, h: 2.4, static: false },
@@ -72,7 +72,9 @@ const DashboardPage = () => {
   // };
 
   // Custom card component with drag handle
-  const DraggableCard = ({ children }) => {
+  const DraggableCard: React.FC<{ children: React.ReactNode }> = ({
+    children,
+  }) => {
     return (
       <Card className="w-full h-full overflow-hidden">
         <CardHeader className="pl-3 pb-1 pt-3 flex flex-row items-center space-y-0 gap-2">

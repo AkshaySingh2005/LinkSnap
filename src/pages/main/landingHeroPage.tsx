@@ -52,6 +52,7 @@ const LandingHero = () => {
                   </Button>
                 </NavLink>
               )}
+              
             </motion.div>
           </div>
           <motion.div

@@ -5,43 +5,82 @@ import RegisterPage from "./pages/main/registerPage";
 import DashboardPage from "./pages/dashboard/dashboardpage";
 import { useAuth } from "@clerk/clerk-react";
 import { Toaster } from "./components/ui/toaster";
+import { PageLoader } from "./components/myComponents/PageLoader";
+import { useEffect, useState } from "react";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isSignedIn, isLoaded } = useAuth();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-  // Show a loading state while Clerk is loading
-  if (!isLoaded) {
-    return <div>Loading...</div>;
+  // Add slightly longer initial loading state for auth check
+  useEffect(() => {
+    if (isLoaded) {
+      const timer = setTimeout(() => {
+        setIsInitialLoading(false);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isLoaded]);
+
+  if (!isLoaded || isInitialLoading) {
+    return <PageLoader message="Navigating to your destination ✈️  ..." />;
   }
 
-  // If the user is not signed in, redirect to the login page
   if (!isSignedIn) {
     return <Navigate to="/login" replace />;
   }
 
-  // If the user is signed in, render the children
   return <>{children}</>;
+};
+
+const SimpleLoader = ({ children }: { children: React.ReactNode }) => {
+  const [homepageLoader, sethomepageLoader] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      sethomepageLoader(false);
+    }, 500);
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  });
+
+  if (homepageLoader) {
+    return <PageLoader message="Loading..." />;
+  }
+  return <>{children}</>;
+};
+
+const AppRoutes = () => {
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <SimpleLoader>
+            <HomePage />
+          </SimpleLoader>
+        }
+      />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  );
 };
 
 const App = () => {
   return (
     <>
       <Toaster />
-      <Routes>
-        <Route path="/" element={<HomePage />}></Route>
-        <Route path="/login" element={<LoginPage />}></Route>
-        <Route path="/register" element={<RegisterPage />}></Route>
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <AppRoutes />
     </>
   );
 };
-
 export default App;
