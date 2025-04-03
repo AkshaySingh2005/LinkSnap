@@ -29,11 +29,14 @@ export function QrCodeModal({ open, onOpenChange, url }: QrCodeModalProps) {
   const downloadQrCode = () => {
     const svgElement = document.getElementById("qr-code");
     if (svgElement) {
-      // Create a canvas element
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
-      // Create an image from the SVG
+      if (!ctx) {
+        console.error("Failed to get 2D context");
+        return;
+      }
+
       const img = new Image();
       const svgData = new XMLSerializer().serializeToString(svgElement);
       const svgBlob = new Blob([svgData], {
@@ -42,17 +45,12 @@ export function QrCodeModal({ open, onOpenChange, url }: QrCodeModalProps) {
       const svgUrl = URL.createObjectURL(svgBlob);
 
       img.onload = () => {
-        // Set canvas dimensions
         canvas.width = img.width;
         canvas.height = img.height;
 
-        // Draw image on canvas
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0); // Now ctx is safely used
 
-        // Convert canvas to PNG
         const pngUrl = canvas.toDataURL("image/png");
-
-        // Create download link
         const downloadLink = document.createElement("a");
         downloadLink.href = pngUrl;
         downloadLink.download = "linksnap-qrcode.png";
@@ -60,7 +58,6 @@ export function QrCodeModal({ open, onOpenChange, url }: QrCodeModalProps) {
         downloadLink.click();
         document.body.removeChild(downloadLink);
 
-        // Clean up
         URL.revokeObjectURL(svgUrl);
       };
 

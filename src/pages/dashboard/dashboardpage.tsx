@@ -1,3 +1,4 @@
+import "./dashboard.css";
 import SidebarLayout from "./sidebar_header_layout";
 import { useTheme } from "@/context/theme-provider";
 import { DateRangePicker } from "./dateRangePicker";
@@ -29,12 +30,10 @@ const DashboardPage = () => {
     to: new Date(2025, 2, 12),
   });
 
-  // This effect ensures the grid renders properly after mount
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Define layouts for different breakpoints
   const layouts = {
     lg: [
       { i: "topClicks", x: 0, y: 0, w: 2, h: 2.5, static: false },
@@ -65,20 +64,12 @@ const DashboardPage = () => {
     ],
   };
 
-  // Function to save layout changes
-  // const handleLayoutChange = (layout, layouts) => {
-  //   // Optional: Save layouts to localStorage
-  //   localStorage.setItem("dashboard-layouts", JSON.stringify(layouts));
-  // };
-
-  // Custom card component with drag handle
   const DraggableCard: React.FC<{ children: React.ReactNode }> = ({
     children,
   }) => {
     return (
       <Card className="w-full h-full overflow-hidden">
         <CardHeader className="pl-3 pb-1 pt-3 flex flex-row items-center space-y-0 gap-2">
-          {/* Drag handle with grip icon */}
           <div className="drag-handle flex items-center cursor-grab active:cursor-grabbing">
             <GripHorizontal className="h-5 w-5 text-[#7c3aed]" />
           </div>
@@ -98,7 +89,6 @@ const DashboardPage = () => {
               : "bg-[#f9f9fa] flex flex-col gap-6 p-6"
           }
         >
-          {/* Header row with Analytics title and DateRangePicker */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex flex-row gap-2 items-center ml-4">
               <h1 className="text-2xl font-bold">Analytics</h1>
@@ -114,22 +104,6 @@ const DashboardPage = () => {
             />
           </div>
 
-          {/* CSS to style drag handles - Note the important .react-grid-item selector */}
-          <style jsx global>{`
-            .react-grid-item.react-grid-placeholder {
-              background: #7c3aed40 !important;
-              border-radius: 0.5rem;
-            }
-
-            /* Override default drag handle */
-            .react-draggable-dragging {
-              z-index: 100;
-              box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
-                0 8px 10px -6px rgb(0 0 0 / 0.1);
-            }
-          `}</style>
-
-          {/* React Grid Layout - only render once mounted for proper sizing */}
           {mounted && (
             <ResponsiveGridLayout
               className="layout"
@@ -139,9 +113,8 @@ const DashboardPage = () => {
               rowHeight={80}
               margin={[16, 16]}
               isDraggable={true}
-              isResizable={false} // Disable resizing
-              // onLayoutChange={handleLayoutChange}
-              draggableHandle=".drag-handle" // Use our custom drag handle
+              isResizable={false}
+              draggableHandle=".drag-handle"
             >
               <div key="topClicks" className="transition-shadow">
                 <DraggableCard>
