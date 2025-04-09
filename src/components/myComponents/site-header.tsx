@@ -47,24 +47,24 @@ const SiteHeader = () => {
               Home
             </NavLink>
           </motion.div>
-          {isSignedIn && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <NavLink
+              to="/dashboard"
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                pathname === "/dashboard"
+                  ? "text-primary"
+                  : "text-muted-foreground"
+              }`}
             >
-              <NavLink
-                to="/dashboard"
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname === "/dashboard"
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                }`}
-              >
-                Dashboard
-              </NavLink>
-            </motion.div>
-          )}
+              Dashboard
+            </NavLink>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
